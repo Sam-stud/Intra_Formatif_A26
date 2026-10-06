@@ -8,7 +8,7 @@
     }
     class PizzaData
     {
-        public int Money { get; set; }
+        public int Money { get; set; } = 10;
         public int NbPizzas { get; set; }
     }
 

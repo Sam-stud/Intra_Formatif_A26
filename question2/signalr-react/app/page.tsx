@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { Button } from "@/components/ui/button";
+import { count } from "console";
 
 export default function Home() {
 
@@ -26,19 +27,40 @@ export default function Home() {
     .withUrl('http://localhost:5282/hubs/pizza')
     .build();
 
-    // TODO: Mettre isConnected à true seulement une fois que la connection au Hub est faite
-    setIsConnected(true);
+    newHubConnection.on("UpdateNbUsers", (count: number) =>{
+      setUserCount(count);
+    });
+
+    newHubConnection.on("UpdateMoney", (money: number) => {
+      setMoney(money);
+    });
+    newHubConnection.on("UpdateNbPizzasAndMoney", (data:{nbPizzas: number, money:number}) => {
+      setMoney(money);
+      setNbPizzas(nbPizzas);
+    });
+    newHubConnection.on("UpdatePizzaPrice", (price:number) => {
+      setPizzaPrice(price);
+    });
+    newHubConnection
+      .start()
+      .then(() => {
+          setIsConnected(true);
+      });
+    setHubConnection(newHubConnection);
   }
 
   function selectChoice(selectedChoice:number) {
     setSelectedChoice(selectedChoice);
+    hubConnection?.invoke("SelectChoice", selectedChoice);
   }
 
   function unselectChoice() {
+    hubConnection?.invoke("UnselectChoice", selectedChoice);
     setSelectedChoice(-1);
   }
 
   function addMoney() {
+    hubConnection?.invoke("AddMoney", selectedChoice);
   }
 
   function buyPizza() {
