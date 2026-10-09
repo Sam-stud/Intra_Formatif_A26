@@ -34,7 +34,7 @@ export default function Home() {
     newHubConnection.on("UpdateMoney", (money: number) => {
       setMoney(money);
     });
-    newHubConnection.on("UpdateNbPizzasAndMoney", (data:{nbPizzas: number, money:number}) => {
+    newHubConnection.on("UpdateNbPizzasAndMoney", (nbPizzas: number, money:number) => {
       setMoney(money);
       setNbPizzas(nbPizzas);
     });
@@ -64,6 +64,7 @@ export default function Home() {
   }
 
   function buyPizza() {
+    hubConnection?.invoke("BuyPizza", selectedChoice);
   }
 
   return (

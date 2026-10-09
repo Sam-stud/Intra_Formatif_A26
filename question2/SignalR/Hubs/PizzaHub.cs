@@ -45,7 +45,7 @@ namespace SignalR.Hubs
             _pizzaManager.IncreaseMoney(choice);
             var group = _pizzaManager.GetGroupName(choice);
 
-            await Clients.Caller.SendAsync("UpdateMoney", _pizzaManager.GetMoney(choice));
+            await Clients.All.SendAsync("UpdateMoney", _pizzaManager.GetMoney(choice));
         }
 
         public async Task BuyPizza(PizzaChoice choice)
@@ -53,7 +53,7 @@ namespace SignalR.Hubs
             _pizzaManager.BuyPizza(choice);
             var group = _pizzaManager.GetGroupName(choice);
 
-            await Clients.Caller.SendAsync("UpdateNbPizzasAndMoney", _pizzaManager.GetNbPizzas(choice), _pizzaManager.GetMoney(choice));
+            await Clients.All.SendAsync("UpdateNbPizzasAndMoney", _pizzaManager.GetNbPizzas(choice), _pizzaManager.GetMoney(choice));
         }
     }
 }
