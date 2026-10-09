@@ -41,32 +41,42 @@ export default function Home() {
     // TODO: Il faut appeler le serveur pour obtenir la séquence d'événements 2 (que vous devez créer sur le serveur)
     try{
       const res = await axios.get("http://localhost:5269/api/Dessins/GetDrawing2");
-      for(const step in res.data){
-        console.log(res.data[step]);
-        await applyEvents(res.data[step]);
+      for(const step of res.data){
+        console.log(step);
+        await applyEvents(step);
       }
     }catch(e){
       console.log(e);
     }
   }
 
-  async function applyEvents(event:any){
-    // TODO: Il faut traiter les événements reçus du serveur et dessiner les formes correspondantes
-    switch(event.type){
-      case "Square":
+async function applyEvents(event: any) {
+  switch (event.type) {
+    case "ChangeColor":
+      currentColor.current = event.color;
+      break;
+
+    case "Square":
       drawSquare(event.x, event.y);
       break;
+
     case "Circle":
       drawCircle(event.x, event.y);
       break;
+
     case "Star":
       drawStar(event.x, event.y, event.innerRadius);
       break;
+
     case "Wait":
       await wait(event.secondes);
       break;
-    }
+
+    default:
+      console.warn("Type d'événement inconnu :", event);
+      break;
   }
+}
 
   // ATTENTION: Les méthodes suivantes n'ont pas besoin d'être modifiées pour répondre à la question
 

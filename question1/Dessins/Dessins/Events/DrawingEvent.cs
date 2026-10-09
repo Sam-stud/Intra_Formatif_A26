@@ -2,6 +2,7 @@
 
 namespace Dessins.Events
 {
+    [JsonDerivedType(typeof(ChangeColor))]
     [JsonDerivedType(typeof(DrawCircle))]
     [JsonDerivedType(typeof(DrawStar))]
     [JsonDerivedType(typeof(DrawSquare))]
